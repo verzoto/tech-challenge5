@@ -1,0 +1,112 @@
+{% extends 'guardian/base.html' %}
+{% block content %}
+{% load static %}
+<div class="w-full h-full flex flex-col justify-center items-center">
+
+	<div class="w-5/6">
+		<div id="alert" class="absolute h-full z-20 p-4 hidden">
+			<div role="alert" class="alert alert-error animate__animated animate__slideInDown">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
+					viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+						d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+				</svg>
+				<span>Faca detectada!</span>
+			</div>
+		</div>
+
+
+		<div class="w-full aspect-video relative bg-base-200 rounded-xl">
+
+			<video id="video" autoplay loop muted class="w-full h-full hidden rounded-xl"></video>
+
+			<iframe id="capture" class="w-full h-full hidden rounded-xl"></iframe>
+
+			<div id="buttons" class="absolute w-full h-full flex justify-center items-center gap-4">
+				<button id="webcam" class="btn btn-primary">Webcam</button>
+				<label for="file" class="btn btn-primary">Upload</label>
+				<input type="file" name="file" id="file" class="hidden" />
+			</div>
+
+			<div id="loading" class="absolute w-full h-full flex justify-center items-center gap-4 hidden">
+				<span class="loading loading-spinner text-primary"></span>
+			</div>
+		</div>
+
+		{% csrf_token %}
+	</div>
+</div>
+
+<script>
+	const fileInput = document.getElementById('file');
+	const capture = document.getElementById('capture');
+	const video = document.getElementById('video');
+
+	const webcamButton = document.getElementById('webcam');
+	const csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+	const buttonsGroup = document.getElementById('buttons');
+	const loading = document.getElementById('loading');
+
+	const alert = document.getElementById('alert');
+
+	webcamButton.onclick = async () => {
+		/*
+		buttonsGroup.classList.add('hidden');
+		capture.classList.remove('hidden');
+		capture.setAttribute('src', '/guardian/stream');
+		
+		buttonsGroup.classList.add('hidden');
+		capture.classList.remove('hidden');
+
+
+		const response = await fetch('/guardian/stream');
+		const data = await response.arrayBuffer();
+		const blob = new Blob([data]);
+		const url = URL.createObjectURL(blob);
+		capture.src = url;
+		*/
+
+		buttonsGroup.classList.add('hidden');
+		//capture.classList.remove('hidden');
+		//capture.src = '/guardian/stream';
+	}
+
+	fileInput.onchange = async () => {
+		buttonsGroup.classList.add('hidden');
+		loading.classList.remove('hidden');
+		console.log("start");
+		const file = fileInput.files[0];
+
+		const formData = new FormData();
+		formData.append('file', file);
+		formData.append('csrfmiddlewaretoken', csrf_token);
+
+		const response = await fetch('/guardian/upload', {
+			method: 'POST',
+			body: formData
+		});
+
+		const data = await response.arrayBuffer();
+		const blob = new Blob([data]);
+		const url = URL.createObjectURL(blob);
+		const knife = response.headers.get('knife_detected');
+
+		if (knife === 'True') {
+			video.classList.add("border-2", "border-error");
+			alert.classList.remove('hidden');
+		}
+
+		video.classList.remove('hidden');
+		video.src = url;
+	}
+
+
+	video.onplaying = () => {
+		loading.classList.add('hidden');
+	}
+
+	capture.onload = (info) => {
+		console.log(info);
+	}
+</script>
+{% endblock %}
