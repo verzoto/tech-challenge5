@@ -20,7 +20,7 @@ O objetivo deste projeto é utilizar Inteligencia Artificial para identificar ob
 
  4. Executar o serviço
    
-    `pip manage.py runserver`
+    `python manage.py runserver`
 
 5. Abrir a URL no navegador
   
