@@ -32,7 +32,7 @@ def upload_video(request):
                 return HttpResponse("File is not a video")
             
             model = YOLO('best.pt')
-            results = model.predict(temp.name, device='mps')
+            results = model.predict(temp.name, device=os.environ['device'])
             
             for result in results:
                 for box in result.boxes:
@@ -92,7 +92,7 @@ def gen(camera, model):
     while True:
         knife_detected = True
         frame = camera.get_frame()
-        results = model.predict(frame, device='mps')
+        results = model.predict(frame, device=os.environ['device'])
         for result in results:
             for box in result.boxes:
                 prob = 0
