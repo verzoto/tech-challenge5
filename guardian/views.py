@@ -48,7 +48,7 @@ def upload_video(request):
                                     knife_detected = True
                             
             if knife_detected:
-                #send_email()
+                send_email()
                 print("Email sent")
             
             cap.release()
@@ -107,9 +107,7 @@ def gen(camera, model):
                                 knife_detected = True
             
         _, jpeg = cv2.imencode('.jpg', frame)     
-        #yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n\r\n')
-        #yield ("<div><img src='data:image/jpeg;base64," + str(base64.b64encode(jpeg)) + "'></div>")
-        yield ("<div><p>Knife detected: " + str(knife_detected) + "</p></div>")
+        yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n\r\n')
 
 @gzip.gzip_page
 def stream(request):

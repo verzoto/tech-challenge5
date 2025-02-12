@@ -20,7 +20,7 @@
 
 			<video id="video" autoplay loop muted class="w-full h-full hidden rounded-xl"></video>
 
-			<iframe id="capture" class="w-full h-full hidden rounded-xl"></iframe>
+			<img id="capture" class="w-full h-full hidden rounded-xl" />
 
 			<div id="buttons" class="absolute w-full h-full flex justify-center items-center gap-4">
 				<button id="webcam" class="btn btn-primary">Webcam</button>
@@ -50,25 +50,10 @@
 	const alert = document.getElementById('alert');
 
 	webcamButton.onclick = async () => {
-		/*
-		buttonsGroup.classList.add('hidden');
-		capture.classList.remove('hidden');
-		capture.setAttribute('src', '/guardian/stream');
 		
 		buttonsGroup.classList.add('hidden');
 		capture.classList.remove('hidden');
-
-
-		const response = await fetch('/guardian/stream');
-		const data = await response.arrayBuffer();
-		const blob = new Blob([data]);
-		const url = URL.createObjectURL(blob);
-		capture.src = url;
-		*/
-
-		buttonsGroup.classList.add('hidden');
-		//capture.classList.remove('hidden');
-		//capture.src = '/guardian/stream';
+		capture.setAttribute('src', '/guardian/stream');
 	}
 
 	fileInput.onchange = async () => {
