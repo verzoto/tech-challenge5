@@ -29,4 +29,4 @@ O objetivo deste projeto é utilizar Inteligencia Artificial para identificar ob
   
    `http://localhost:8000/guardian/`
 
-** Para funcionamento do envio de e-mail, é necessário configurar um SMTP no arquivo `.env` **
+**Para funcionamento do envio de e-mail, é necessário configurar um SMTP no arquivo `.env`**
